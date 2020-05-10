@@ -1,3 +1,8 @@
+export interface IAction {
+  type: string;
+  payload: any;
+}
+
 export interface IFile {
   name: string;
   type: string;
@@ -24,7 +29,7 @@ export type PaperSize =
 
 export type Layout = "Portrait" | "Landspace";
 
-export interface Settings {
+export interface ISettings {
   paperSize: PaperSize;
   layout: Layout;
   copies: number;

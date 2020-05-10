@@ -1,36 +1,12 @@
 import React, { useReducer, useCallback } from "react";
-import { Container, Grid, Card, List } from "semantic-ui-react";
-import { File } from "components/File";
+import { Container, Grid, Card, List, Button } from "semantic-ui-react";
+import { Document } from "components/Document";
 import { FileInput } from "components/FileInput";
 
-import { IFileWithId } from "types";
+import { reducer, defaultState } from "reducers";
+import { ADD_FILES, REMOVE_FILE } from "constants/actionTypes";
 
-const ADD_FILES = "ADD_FILES";
-const REMOVE_FILE = "REMOVE_FILE";
-
-interface IAction {
-  type: string;
-  payload: any;
-}
-
-const filesReducer = (
-  state: IFileWithId[] = [],
-  action: IAction
-): IFileWithId[] => {
-  switch (action.type) {
-    case ADD_FILES:
-      return [...state, ...action.payload];
-    case REMOVE_FILE: {
-      const index = state.findIndex(
-        (file: IFileWithId) => file.id === action.payload.id
-      );
-
-      return [...state.slice(0, index), ...state.slice(index + 1)];
-    }
-    default:
-      return state;
-  }
-};
+import { IFileWithId, IAction } from "types";
 
 const addFiles = (files: IFileWithId[]): IAction => ({
   type: ADD_FILES,
@@ -43,7 +19,7 @@ const removeFile = (id: string): IAction => ({
 });
 
 function App() {
-  const [state, dispatch] = useReducer(filesReducer, []);
+  const [state, dispatch] = useReducer(reducer, defaultState);
   const handleAddFiles = useCallback(
     (files: any[]) => dispatch(addFiles(files)),
     [dispatch]
@@ -59,15 +35,23 @@ function App() {
           <Card fluid>
             <Card.Content>
               <List divided relaxed>
-                {state.map((file: IFileWithId) => (
-                  <File key={file.id} {...file} onRemove={handleRemoveFile} />
+                {state.files.map((file: IFileWithId) => (
+                  <Document
+                    key={file.id}
+                    file={file}
+                    settings={state.settings[file.id]}
+                    onRemove={handleRemoveFile}
+                  />
                 ))}
               </List>
+              <FileInput name="files" onAddFiles={handleAddFiles} />
             </Card.Content>
           </Card>
         </Grid.Row>
         <Grid.Row>
-          <FileInput name="files" onAddFiles={handleAddFiles} />
+          <Button primary size="big">
+            Submit
+          </Button>
         </Grid.Row>
       </Grid>
     </Container>
