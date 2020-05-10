@@ -10,6 +10,7 @@ export const getIconNameByFileType = (type: string): SemanticICONS => {
     case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
       return "file word";
     case "application/x-zip-compressed":
+    case "application/zip":
       return "file archive";
     default:
       return "file";

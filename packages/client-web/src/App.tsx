@@ -6,36 +6,50 @@ import { FileInput } from "components/FileInput";
 import { IFileWithId } from "types";
 
 const ADD_FILES = "ADD_FILES";
+const REMOVE_FILE = "REMOVE_FILE";
 
-interface IAddFileAction {
+interface IAction {
   type: string;
-  payload?: IFileWithId[];
-  meta?: { id: number | string };
-}
-
-interface IRemoveFileAction {
-  type: string;
-  meta: { id: number | string };
+  payload: any;
 }
 
 const filesReducer = (
   state: IFileWithId[] = [],
-  action: IAddFileAction
+  action: IAction
 ): IFileWithId[] => {
   switch (action.type) {
     case ADD_FILES:
       return [...state, ...action.payload];
+    case REMOVE_FILE: {
+      const index = state.findIndex(
+        (file: IFileWithId) => file.id === action.payload.id
+      );
+
+      return [...state.slice(0, index), ...state.slice(index + 1)];
+    }
     default:
       return state;
   }
 };
 
-const addFiles = (files: any[]) => ({ type: ADD_FILES, payload: files });
+const addFiles = (files: IFileWithId[]): IAction => ({
+  type: ADD_FILES,
+  payload: files,
+});
+
+const removeFile = (id: string): IAction => ({
+  type: REMOVE_FILE,
+  payload: { id },
+});
 
 function App() {
   const [state, dispatch] = useReducer(filesReducer, []);
   const handleAddFiles = useCallback(
     (files: any[]) => dispatch(addFiles(files)),
+    [dispatch]
+  );
+  const handleRemoveFile = useCallback(
+    (id: string) => dispatch(removeFile(id)),
     [dispatch]
   );
   return (
@@ -45,8 +59,8 @@ function App() {
           <Card fluid>
             <Card.Content>
               <List divided relaxed>
-                {state.map((file) => (
-                  <File key={file.name} {...file} />
+                {state.map((file: IFileWithId) => (
+                  <File key={file.id} {...file} onRemove={handleRemoveFile} />
                 ))}
               </List>
             </Card.Content>
