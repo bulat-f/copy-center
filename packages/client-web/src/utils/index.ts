@@ -16,3 +16,24 @@ export const getIconNameByFileType = (type: string): SemanticICONS => {
       return "file";
   }
 };
+
+type Reducer = (state: any, action: any) => any;
+
+interface IReducers {
+  [name: string]: Reducer;
+}
+
+export const combineReducers = (reducers: IReducers) => {
+  const names = Object.keys(reducers);
+  const combinedReducers = (state: any, action: any) => {
+    return names.reduce(
+      (acc: any, currentName: string) => ({
+        ...acc,
+        [currentName]: reducers[currentName](state[currentName], action),
+      }),
+      {}
+    );
+  };
+
+  return combinedReducers;
+};

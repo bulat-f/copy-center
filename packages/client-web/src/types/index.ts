@@ -34,3 +34,5 @@ export interface ISettings {
   layout: Layout;
   copies: number;
 }
+
+export type DeliveryMethod = "pick_up" | "deliver";
