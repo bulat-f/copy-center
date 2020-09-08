@@ -4,6 +4,8 @@ import { getIconNameByFileType } from "utils";
 
 import { IFileWithId, ISettings } from "types";
 
+import styles from "./Document.module.css";
+
 interface IProps {
   file: IFileWithId;
   settings: ISettings;
@@ -17,10 +19,10 @@ export const Document: React.FC<IProps> = ({ file, settings, onRemove }) => {
   ]);
   return (
     <List.Item>
-      <List.Icon
-        name={getIconNameByFileType(file.type)}
-        size="huge"
-        verticalAlign="middle"
+      <img
+        className={styles.Image}
+        src={getIconNameByFileType(file)}
+        alt="file icon"
       />
       <List.Content verticalAlign="middle">
         <List.Header>{file.name}</List.Header>

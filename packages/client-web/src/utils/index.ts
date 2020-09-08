@@ -1,19 +1,42 @@
-import { SemanticICONS } from "semantic-ui-react";
+import { IFile } from "types";
 
-export const getIconNameByFileType = (type: string): SemanticICONS => {
-  switch (type) {
-    case "image/jpeg":
-    case "image/png":
-      return "file image";
-    case "application/pdf":
-      return "file pdf";
-    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-      return "file word";
-    case "application/x-zip-compressed":
-    case "application/zip":
-      return "file archive";
+import jpg from "../images/jpg.svg";
+import png from "../images/png.svg";
+import pdf from "../images/pdf.svg";
+import doc from "../images/doc.svg";
+import zip from "../images/zip.svg";
+import xls from "../images/xls.svg";
+import txt from "../images/txt.svg";
+import ppt from "../images/ppt.svg";
+import csv from "../images/csv.svg";
+import defaultIcon from "../images/file.svg";
+
+export const getIconNameByFileType = (file: IFile): string => {
+  const ext = file.name.split(".")[1];
+
+  switch (ext) {
+    case "jpg":
+    case "jpeg":
+      return jpg;
+    case "png":
+      return png;
+    case "pdf":
+      return pdf;
+    case "doc":
+    case "docx":
+      return doc;
+    case "zip":
+      return zip;
+    case "xls":
+      return xls;
+    case "txt":
+      return txt;
+    case "ppt":
+      return ppt;
+    case "csv":
+      return csv;
     default:
-      return "file";
+      return defaultIcon;
   }
 };
 

@@ -10,7 +10,6 @@ import {
   CheckboxProps,
   Select,
   Input,
-  InputOnChangeData,
   DropdownProps,
 } from "semantic-ui-react";
 import { Document } from "components/Document";
